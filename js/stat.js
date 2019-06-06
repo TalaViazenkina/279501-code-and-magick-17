@@ -63,9 +63,8 @@ window.renderStatistics = function (ctx, names, times) {
     ctx.fillStyle = '#000000'; // переопределяем цвет на дефолтный
 
     // временной показатель
-    ctx.textAlign = 'left';
-    ctx.fillText(Math.round(times[i]), statX + statBarShift * i, statY + statBarShiftY);
+    ctx.fillText(Math.round(times[i]), statX + statBarShift * i + STAT_BAR_WIDTH / 2, statY + statBarShiftY, statBarShift - 5);
     // имя игрока
-    ctx.fillText(names[i], statX + statBarShift * i, statY + STAT_BAR_MAX_HEIGHT + cloudLineHeight * 1.5);
+    ctx.fillText(names[i], statX + statBarShift * i + STAT_BAR_WIDTH / 2, statY + STAT_BAR_MAX_HEIGHT + cloudLineHeight * 1.5, statBarShift - 5);
   }
 };
