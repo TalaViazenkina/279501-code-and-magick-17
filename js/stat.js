@@ -16,7 +16,21 @@ var statBarShift = STAT_BAR_WIDTH + GAP; // сдвиг столбца гисто
 // функция отрисовки облака
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
-  ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
+  ctx.beginPath();
+  ctx.moveTo(x + 10, y);
+  ctx.lineTo(x + CLOUD_WIDTH - 10, y);
+  ctx.lineTo(x + CLOUD_WIDTH - 10, y + 10);
+  ctx.lineTo(x + CLOUD_WIDTH, y + 10);
+  ctx.lineTo(x + CLOUD_WIDTH, y + CLOUD_HEIGHT - 10);
+  ctx.lineTo(x + CLOUD_WIDTH - 10, y + CLOUD_HEIGHT - 10);
+  ctx.lineTo(x + CLOUD_WIDTH - 10, y + CLOUD_HEIGHT);
+  ctx.lineTo(x + 10, y + CLOUD_HEIGHT);
+  ctx.lineTo(x + 10, y + CLOUD_HEIGHT - 10);
+  ctx.lineTo(x, y + CLOUD_HEIGHT - 10);
+  ctx.lineTo(x, y + 10);
+  ctx.lineTo(x + 10, y + 10);
+  ctx.closePath();
+  ctx.fill();
 };
 
 // функция поиска максимального числа в массиве
