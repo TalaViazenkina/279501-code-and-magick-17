@@ -19,8 +19,23 @@ var renderCloud = function (ctx, x, y, color) {
   ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
 };
 
+// функция поиска максимального числа в массиве
+var getMaxElement = function (arr) {
+  var maxElement = arr[0];
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i]) { // проверка на то, что элемент массива не является пустым
+      if (maxElement < arr[i]) {
+        maxElement = arr[i];
+      }
+    } else {
+      i++;
+    }
+  }
 
-window.renderStatistics = function (ctx, names) {
+  return maxElement;
+};
+
+window.renderStatistics = function (ctx, names, times) {
   renderCloud(ctx, CLOUD_X + 10, CLOUD_Y + 10, 'rgba(0, 0, 0, 0.7');
   renderCloud(ctx, CLOUD_X, CLOUD_Y, '#ffffff');
 
@@ -32,18 +47,25 @@ window.renderStatistics = function (ctx, names) {
   ctx.fillText('Список результатов:', CLOUD_X + CLOUD_WIDTH / 2, CLOUD_Y + GAP / 2 + cloudLineHeight);
 
   // гистограмма
+  var maxTimes = getMaxElement(times); // определяем максимальное время - оно будет соответствовать столбцу с максимальной высотой
   for (var i = 0; i < names.length; i++) {
-    // определяем цвет столбца гистограммы
+    // определяем цвет столбцов гистограммы
     var barColor = 'rgba(255, 0, 0, 1)'; // цвет по умолчанию
     if (names[i] !== 'Вы') {
       barColor = 'hsl(240, ' + Math.random() * 100 + '%, 50%)'; // генерируем синий цвет со случайной насыщенностью
     }
 
-    ctx.textAlign = 'left';
-    ctx.fillText('150', statX + statBarShift * i, statY);
+    // столбец диаграммы
     ctx.fillStyle = barColor; // задаем цвет столбцу гистограммы
-    ctx.fillRect(statX + statBarShift * i, statY + cloudLineHeight / 2, STAT_BAR_WIDTH, STAT_BAR_MAX_HEIGHT);
+    var statBarHeight = times[i] * STAT_BAR_MAX_HEIGHT / maxTimes; // пропорциональная высота столбца
+    ctx.fillRect(statX + statBarShift * i, statY + cloudLineHeight / 2 + (STAT_BAR_MAX_HEIGHT - statBarHeight), STAT_BAR_WIDTH, statBarHeight);
+
     ctx.fillStyle = '#000000'; // переопределяем цвет на дефолтный
+
+    // временной показатель
+    ctx.textAlign = 'left';
+    ctx.fillText(Math.round(times[i]), statX + statBarShift * i, statY + (STAT_BAR_MAX_HEIGHT - statBarHeight));
+
     ctx.fillText(names[i], statX + statBarShift * i, statY + STAT_BAR_MAX_HEIGHT + cloudLineHeight * 1.5);
   }
 };
