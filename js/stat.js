@@ -61,13 +61,12 @@ window.renderStatistics = function (ctx, names, times) {
   var maxTimes = getMaxElement(times); // определяем максимальное время - оно будет соответствовать столбцу с максимальной высотой
   for (var i = 0; i < names.length; i++) {
     // столбец диаграммы
-    // определяем цвет столбцов гистограммы
-    var barColor = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'hsl(240, ' + Math.random() * 100 + '%, 50%)';
-    ctx.fillStyle = barColor; // задаем цвет столбцу гистограммы
+    // задаем цвет столбцу гистограммы
+    ctx.fillStyle = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'hsl(240, ' + Math.random() * 100 + '%, 50%)';
 
     // определяем пропорциональную высоту столбца
     var statBarHeight = times[i] * STAT_BAR_MAX_HEIGHT / maxTimes;
-    // определяем смещение столбцов по вертикале
+    // определяем смещение столбцов по вертикали
     var statBarShiftY = STAT_BAR_MAX_HEIGHT - statBarHeight;
     ctx.fillRect(statX + statBarShift * i, statY + cloudLineHeight / 2 + statBarShiftY, STAT_BAR_WIDTH, statBarHeight);
 
