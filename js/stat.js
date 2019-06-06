@@ -49,23 +49,23 @@ window.renderStatistics = function (ctx, names, times) {
   // гистограмма
   var maxTimes = getMaxElement(times); // определяем максимальное время - оно будет соответствовать столбцу с максимальной высотой
   for (var i = 0; i < names.length; i++) {
-    // определяем цвет столбцов гистограммы
-    var barColor = 'rgba(255, 0, 0, 1)'; // цвет по умолчанию
-    if (names[i] !== 'Вы') {
-      barColor = 'hsl(240, ' + Math.random() * 100 + '%, 50%)'; // генерируем синий цвет со случайной насыщенностью
-    }
-
     // столбец диаграммы
+    // определяем цвет столбцов гистограммы
+    var barColor = (names[i] === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'hsl(240, ' + Math.random() * 100 + '%, 50%)';
     ctx.fillStyle = barColor; // задаем цвет столбцу гистограммы
-    var statBarHeight = times[i] * STAT_BAR_MAX_HEIGHT / maxTimes; // пропорциональная высота столбца
-    ctx.fillRect(statX + statBarShift * i, statY + cloudLineHeight / 2 + (STAT_BAR_MAX_HEIGHT - statBarHeight), STAT_BAR_WIDTH, statBarHeight);
+
+    // определяем пропорциональную высоту столбца
+    var statBarHeight = times[i] * STAT_BAR_MAX_HEIGHT / maxTimes;
+    // определяем смещение столбцов по вертикале
+    var statBarShiftY = STAT_BAR_MAX_HEIGHT - statBarHeight;
+    ctx.fillRect(statX + statBarShift * i, statY + cloudLineHeight / 2 + statBarShiftY, STAT_BAR_WIDTH, statBarHeight);
 
     ctx.fillStyle = '#000000'; // переопределяем цвет на дефолтный
 
     // временной показатель
     ctx.textAlign = 'left';
-    ctx.fillText(Math.round(times[i]), statX + statBarShift * i, statY + (STAT_BAR_MAX_HEIGHT - statBarHeight));
-
+    ctx.fillText(Math.round(times[i]), statX + statBarShift * i, statY + statBarShiftY);
+    // имя игрока
     ctx.fillText(names[i], statX + statBarShift * i, statY + STAT_BAR_MAX_HEIGHT + cloudLineHeight * 1.5);
   }
 };
