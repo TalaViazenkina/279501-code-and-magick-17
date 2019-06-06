@@ -23,15 +23,12 @@ var renderCloud = function (ctx, x, y, color) {
 var getMaxElement = function (arr) {
   var maxElement = arr[0];
   for (var i = 0; i < arr.length; i++) {
-    if (arr[i]) { // проверка на то, что элемент массива не является пустым
-      if (maxElement < arr[i]) {
-        maxElement = arr[i];
-      }
-    } else {
+    if (!arr[i]) { // проверка на то, что элемент массива не является пустым
       i++;
+    } else if (maxElement < arr[i]) {
+      maxElement = arr[i];
     }
   }
-
   return maxElement;
 };
 
