@@ -33,9 +33,17 @@ window.renderStatistics = function (ctx, names) {
 
   // гистограмма
   for (var i = 0; i < names.length; i++) {
+    // определяем цвет столбца гистограммы
+    var barColor = 'rgba(255, 0, 0, 1)'; // цвет по умолчанию
+    if (names[i] !== 'Вы') {
+      barColor = 'hsl(240, ' + Math.random() * 100 + '%, 50%)'; // генерируем синий цвет со случайной насыщенностью
+    }
+
     ctx.textAlign = 'left';
     ctx.fillText('150', statX + statBarShift * i, statY);
+    ctx.fillStyle = barColor; // задаем цвет столбцу гистограммы
     ctx.fillRect(statX + statBarShift * i, statY + cloudLineHeight / 2, STAT_BAR_WIDTH, STAT_BAR_MAX_HEIGHT);
+    ctx.fillStyle = '#000000'; // переопределяем цвет на дефолтный
     ctx.fillText(names[i], statX + statBarShift * i, statY + STAT_BAR_MAX_HEIGHT + cloudLineHeight * 1.5);
   }
 };
