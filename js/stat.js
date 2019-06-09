@@ -35,12 +35,20 @@ var renderCloud = function (ctx, x, y, color) {
 
 // функция поиска максимального числа в массиве
 var getMaxElement = function (arr) {
-  var maxElement = arr[0];
-  for (var i = 0; i < arr.length; i++) {
-    if (!arr[i]) { // проверка на то, что элемент массива не является пустым
-      i++;
-    } else if (maxElement < arr[i]) {
-      maxElement = arr[i];
+  // находим первый не пустой элемент
+  var i = 0;
+  while (!arr[i]) {
+    i++;
+  }
+  var maxElement = arr[i]; // первый не пустой элемент объявляем максимальным
+
+  // сравниваем в цикле все последующие элементы с максимальным
+  for (var j = i + 1; j < arr.length; j++) {
+    while (!arr[j]) { // проверяем, что текущий элемент не является пустым
+      j++;
+    }
+    if (maxElement < arr[j]) {
+      maxElement = arr[j];
     }
   }
   return maxElement;
