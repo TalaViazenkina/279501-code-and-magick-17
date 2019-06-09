@@ -23,10 +23,17 @@ var getRandomItem = function (arr) {
 // создадим сгенерированного волшебника и добавим его в массив
 for (var i = 0; i < wizardsNumber; i++) {
   var wizardRandom = {};
-  // генерируем имя волшебника
-  wizardRandom.name = getRandomItem(names) + ' ' + getRandomItem(surnames);
-  console.log(wizardRandom.name);
+
+  // генерируем имя волшебника cо случайным порядком имени и фамилии
+  wizardRandom.name = Math.round(Math.random()) ? (getRandomItem(names) + ' ' + getRandomItem(surnames)) : (getRandomItem(surnames) + ' ' + getRandomItem(names));
+
+  // генерируем цвет мантии
+  wizardRandom.coatColor = getRandomItem(coatColors);
+
+  // генерируем цвет глаз
+  wizardRandom.eyesColor = getRandomItem(eyesColors);
 
   wizardsListRandom.push(wizardRandom); // добавляем сгенерированного волшебника в массив
 }
 
+console.log(wizardsListRandom);
