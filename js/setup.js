@@ -57,12 +57,16 @@ var renderWizard = function (wizard) {
   return newWizard;
 };
 
-// в цикле создадим несколько волшебников и добавим в DocumentFragment
-var fragment = document.createDocumentFragment();
-for (var j = 0; j < wizardsListRandom.length; j++) {
-  fragment.appendChild(renderWizard(wizardsListRandom[j]));
-}
+// создадим требуемое количество волшебников и добавим их в разметку
+var getSimilarWizardList = function () {
+  var fragment = document.createDocumentFragment();
+  for (var j = 0; j < wizardsListRandom.length; j++) {
+    fragment.appendChild(renderWizard(wizardsListRandom[j]));
+  }
 
-setupWizardsList.appendChild(fragment); // добавляем группу сгенерированных волшебников в разметку, в блок "Похожие персонажи"
+  return setupWizardsList.appendChild(fragment); // добавляем группу сгенерированных волшебников в разметку, в блок "Похожие персонажи"
+};
+
+getSimilarWizardList();
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden'); // блок "Похожие персонажи" делаем видимым
