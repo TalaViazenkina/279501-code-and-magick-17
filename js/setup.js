@@ -28,11 +28,28 @@ var getRandomItem = function (arr) {
   return arr[Math.floor((Math.random() * arr.length))];
 };
 
+// перемешивание массива
+var getMixedArray = function (arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    // получаем индекс случайного элемента в массиве с длинной (i + 1),
+    // на первой итерации длина массива равна длине исходного,
+    // с каждой последующей - на единицу меньше
+    var randomIndex = Math.floor(Math.random() * (i + 1));
+
+    // меняем элементы местами
+    var temp = arr[i];
+    arr[i] = arr[randomIndex]; // случайно выбранный элемент перенесен в конец массива
+    arr[randomIndex] = temp; // на место случайно выбранного элемента записан элемент с индексом i
+  }
+
+  return arr;
+};
+
 // создадим сгенерированного волшебника
-var getWizardRandom = function () {
+var getWizardRandom = function (name, surname) {
   return {
     // генерируем имя волшебника cо случайным порядком имени и фамилии
-    name: Math.round(Math.random()) ? (getRandomItem(names) + ' ' + getRandomItem(surnames)) : (getRandomItem(surnames) + ' ' + getRandomItem(names)),
+    name: Math.round(Math.random()) ? (name + ' ' + surname) : (surname + ' ' + name),
 
     // генерируем цвет мантии
     coatColor: getRandomItem(coatColors),
@@ -43,8 +60,10 @@ var getWizardRandom = function () {
 };
 
 // создадим массив сгенерированных волшебников
+getMixedArray(names); // перемешиваем имена
+getMixedArray(surnames); // перемешиваем фамилии
 for (var i = 0; i < WIZARDS_NUMBER; i++) {
-  wizardsListRandom.push(getWizardRandom());
+  wizardsListRandom.push(getWizardRandom(names[i], surnames[i]));
 }
 
 // создадим новый DOM-элемент с волшебником
