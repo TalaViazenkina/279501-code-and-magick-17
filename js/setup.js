@@ -20,7 +20,7 @@ var surnames = ['да Марья', 'Верон', 'Мирабелла', 'Валь
 var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
 
-var wizardsNumber = 4; // количество волшебников, которые необходимо сгенерировать
+var WIZARDS_NUMBER = 4; // количество волшебников, которые необходимо сгенерировать
 var wizardsListRandom = []; // массив сгенерированных волшебников
 
 // сделаем универсальную функцию для получения случайного элемента массива
@@ -28,20 +28,23 @@ var getRandomItem = function (arr) {
   return arr[Math.floor((Math.random() * arr.length))];
 };
 
+// создадим сгенерированного волшебника
+var getWizardRandom = function () {
+  return {
+    // генерируем имя волшебника cо случайным порядком имени и фамилии
+    name: Math.round(Math.random()) ? (getRandomItem(names) + ' ' + getRandomItem(surnames)) : (getRandomItem(surnames) + ' ' + getRandomItem(names)),
+
+    // генерируем цвет мантии
+    coatColor: getRandomItem(coatColors),
+
+    // генерируем цвет глаз
+    eyesColor: getRandomItem(eyesColors)
+  };
+};
+
 // создадим массив сгенерированных волшебников
-for (var i = 0; i < wizardsNumber; i++) {
-  var wizardRandom = {}; // сгенерированный волшебник
-
-  // генерируем имя волшебника cо случайным порядком имени и фамилии
-  wizardRandom.name = Math.round(Math.random()) ? (getRandomItem(names) + ' ' + getRandomItem(surnames)) : (getRandomItem(surnames) + ' ' + getRandomItem(names));
-
-  // генерируем цвет мантии
-  wizardRandom.coatColor = getRandomItem(coatColors);
-
-  // генерируем цвет глаз
-  wizardRandom.eyesColor = getRandomItem(eyesColors);
-
-  wizardsListRandom.push(wizardRandom); // добавляем сгенерированного волшебника в массив
+for (var i = 0; i < WIZARDS_NUMBER; i++) {
+  wizardsListRandom.push(getWizardRandom());
 }
 
 // создадим новый DOM-элемент с волшебником
