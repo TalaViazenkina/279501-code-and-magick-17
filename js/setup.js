@@ -10,7 +10,13 @@ var userDialogOpen = document.querySelector('.setup-open');
 var userDialogClose = userDialog.querySelector('.setup-close');
 
 // поле ввода имени в окне настройки персонажа
-var userName = userDialog.querySelector('.setup-user-name');
+var characterName = userDialog.querySelector('.setup-user-name');
+
+// элемент, описывающий цвет мантии
+var characterCoatColor = userDialog.querySelector('.setup-player .wizard-coat');
+
+// поле ввода цвета мантии
+var characterCoatColorInput = userDialog.querySelector('input[name=coat-color]');
 
 // находим DOM-элемент, куда будем вставлять созданных волшебников
 var setupWizardsList = userDialog.querySelector('.setup-similar-list');
@@ -113,11 +119,11 @@ var openPopup = function () {
 
   document.addEventListener('keydown', onPopupEscPress);
 
-  userName.addEventListener('focus', function () {
+  characterName.addEventListener('focus', function () {
     document.removeEventListener('keydown', onPopupEscPress); // при фокусе в поле имени окно по esc закрываться не должно
   });
 
-  userName.addEventListener('blur', function () {
+  characterName.addEventListener('blur', function () {
     document.addEventListener('keydown', onPopupEscPress); // возвращаем закрытие по esc после удаления фокуса с поля ввода
   });
 };
@@ -149,4 +155,10 @@ userDialogClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     closePopup();
   }
+});
+
+// изменение цвета мантии по клилку
+characterCoatColor.addEventListener('click', function () {
+  characterCoatColor.style.fill = getRandomItem(COAT_COLORS);
+  characterCoatColorInput.value = characterCoatColor.style.fill;
 });
