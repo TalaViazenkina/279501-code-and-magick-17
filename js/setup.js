@@ -18,6 +18,12 @@ var characterCoatColor = userDialog.querySelector('.setup-player .wizard-coat');
 // поле ввода цвета мантии
 var characterCoatColorInput = userDialog.querySelector('input[name=coat-color]');
 
+// элемент, описывающий цвет глаз
+var characterEyesColor = userDialog.querySelector('.setup-player .wizard-eyes');
+
+// поле ввода цвета глаз
+var characterEyesColorInput = userDialog.querySelector('input[name=eyes-color]');
+
 // находим DOM-элемент, куда будем вставлять созданных волшебников
 var setupWizardsList = userDialog.querySelector('.setup-similar-list');
 
@@ -157,8 +163,14 @@ userDialogClose.addEventListener('keydown', function (evt) {
   }
 });
 
-// изменение цвета мантии по клилку
+// изменение цвета мантии по клику
 characterCoatColor.addEventListener('click', function () {
   characterCoatColor.style.fill = getRandomItem(COAT_COLORS);
   characterCoatColorInput.value = characterCoatColor.style.fill;
+});
+
+// изменение цвета глаз по клику
+characterEyesColor.addEventListener('click', function () {
+  characterEyesColor.style.fill = getRandomItem(EYES_COLORS);
+  characterEyesColorInput.value = characterEyesColor.style.fill;
 });
