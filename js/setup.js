@@ -2,8 +2,15 @@
 
 // находим окно настройки персонажа
 var userDialog = document.querySelector('.setup');
-// убираем с окна настройки класс hidden
-userDialog.classList.remove('hidden');
+
+// кнопка открытия окна настройки персонажа
+var userDialogOpen = document.querySelector('.setup-open');
+
+// кнопка закрытия окна настройки персонажа
+var userDialogClose = userDialog.querySelector('.setup-close');
+
+// поле ввода имени в окне настройки персонажа
+var userName = userDialog.querySelector('.setup-user-name');
 
 // находим DOM-элемент, куда будем вставлять созданных волшебников
 var setupWizardsList = userDialog.querySelector('.setup-similar-list');
@@ -13,15 +20,18 @@ var wizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
 
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 
 // исходные данные для генерации персонажей
-var names = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var surnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var coatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var eyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
+var NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 
 var WIZARDS_NUMBER = 4; // количество волшебников, которые необходимо сгенерировать
 var wizardsListRandom = []; // массив сгенерированных волшебников
+
 
 // сделаем универсальную функцию для получения случайного элемента массива
 var getRandomItem = function (arr) {
@@ -52,18 +62,18 @@ var getWizardRandom = function (name, surname) {
     name: Math.round(Math.random()) ? (name + ' ' + surname) : (surname + ' ' + name),
 
     // генерируем цвет мантии
-    coatColor: getRandomItem(coatColors),
+    coatColor: getRandomItem(COAT_COLORS),
 
     // генерируем цвет глаз
-    eyesColor: getRandomItem(eyesColors)
+    eyesColor: getRandomItem(EYES_COLORS)
   };
 };
 
 // создадим массив сгенерированных волшебников
-getMixedArray(names); // перемешиваем имена
-getMixedArray(surnames); // перемешиваем фамилии
+getMixedArray(NAMES); // перемешиваем имена
+getMixedArray(SURNAMES); // перемешиваем фамилии
 for (var i = 0; i < WIZARDS_NUMBER; i++) {
-  wizardsListRandom.push(getWizardRandom(names[i], surnames[i]));
+  wizardsListRandom.push(getWizardRandom(NAMES[i], SURNAMES[i]));
 }
 
 // создадим новый DOM-элемент с волшебником
@@ -89,3 +99,54 @@ var getSimilarWizardList = function () {
 getSimilarWizardList();
 
 userDialog.querySelector('.setup-similar').classList.remove('hidden'); // блок "Похожие персонажи" делаем видимым
+
+// закрытие попапа по esc
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    userDialog.classList.add('hidden');
+  }
+};
+
+// открытие и закрытие попапа
+var openPopup = function () {
+  userDialog.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPopupEscPress);
+
+  userName.addEventListener('focus', function () {
+    document.removeEventListener('keydown', onPopupEscPress); // при фокусе в поле имени окно по esc закрываться не должно
+  });
+
+  userName.addEventListener('blur', function () {
+    document.addEventListener('keydown', onPopupEscPress); // возвращаем закрытие по esc после удаления фокуса с поля ввода
+  });
+};
+
+var closePopup = function () {
+  userDialog.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+// открытие окна настройки персонажа
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+// открытие окна настройки персонажа по enter
+userDialogOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+// закрытие окна настройки персонажа
+userDialogClose.addEventListener('click', function () {
+  closePopup();
+});
+
+// закрытие окна настройки персонажа по enter
+userDialogClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
