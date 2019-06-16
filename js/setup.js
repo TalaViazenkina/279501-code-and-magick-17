@@ -154,10 +154,11 @@ userDialog.querySelector('.setup-similar').classList.remove('hidden'); // бло
  * @param {KeyboardsEvent} evt
  */
 var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === ESC_KEYCODE && characterName !== document.activeElement) {
     userDialog.classList.add('hidden');
   }
 };
+
 
 /**
 * Открывает попап
@@ -166,14 +167,6 @@ var openPopup = function () {
   userDialog.classList.remove('hidden');
 
   document.addEventListener('keydown', onPopupEscPress);
-
-  characterName.addEventListener('focus', function () {
-    document.removeEventListener('keydown', onPopupEscPress); // при фокусе в поле имени окно по esc закрываться не должно
-  });
-
-  characterName.addEventListener('blur', function () {
-    document.addEventListener('keydown', onPopupEscPress); // возвращаем закрытие по esc после удаления фокуса с поля ввода
-  });
 };
 
 /**
