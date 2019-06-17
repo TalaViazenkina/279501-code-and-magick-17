@@ -61,9 +61,6 @@ var wizardTemplate = document.querySelector('#similar-wizard-template')
   .querySelector('.setup-similar-item');
 
 
-var wizardsListRandom = []; // массив сгенерированных волшебников
-
-
 /**
 * генерируем случайный элемент массива
 * @param {array} arr
@@ -94,6 +91,9 @@ var getMixedArray = function (arr) {
   return arr;
 };
 
+
+var wizardsListRandom = []; // массив сгенерированных волшебников
+
 /**
 * создадает сгенерированного волшебника
 * @param {string} name
@@ -114,10 +114,10 @@ var getWizardRandom = function (name, surname) {
 };
 
 // создадим массив сгенерированных волшебников
-getMixedArray(NAMES); // перемешиваем имена
-getMixedArray(SURNAMES); // перемешиваем фамилии
+var mixedNames = getMixedArray(NAMES.slice()); // получаем массив перемешенных имен
+var mixedSurnames = getMixedArray(SURNAMES.slice()); // получаем массив перемешенных фамилий
 for (var i = 0; i < WIZARDS_NUMBER; i++) {
-  wizardsListRandom.push(getWizardRandom(NAMES[i], SURNAMES[i]));
+  wizardsListRandom.push(getWizardRandom(mixedNames[i], mixedSurnames[i]));
 }
 
 /**
