@@ -2,15 +2,15 @@
 
 (function () {
   /**
-   * @const
-   * @type {number}
-   */
+  * @const
+  * @type {number}
+  */
   var ESC_KEYCODE = 27;
 
   /**
-     * @const
-     * @type {number}
-     */
+  * @const
+  * @type {number}
+  */
   var ENTER_KEYCODE = 13;
 
   // сохраним изначальные координаты открытого попапа (из CSS)
@@ -36,9 +36,9 @@
   var userDialogHandle = userDialog.querySelector('.upload');
 
   /**
- * Обработчик событий клавиатуры - закрытие попапа по esc
- * @param {KeyboardsEvent} evt
- */
+  * Обработчик событий клавиатуры - закрытие попапа по esc
+  * @param {KeyboardsEvent} evt
+  */
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE && characterName !== document.activeElement) {
       userDialog.classList.add('hidden');
