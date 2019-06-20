@@ -51,6 +51,10 @@
   var openPopup = function () {
     userDialog.classList.remove('hidden');
 
+    // присваиваем изначальные координаты
+    userDialog.style.top = usersDialogPositionInitial.TOP;
+    userDialog.style.left = usersDialogPositionInitial.LEFT;
+
     document.addEventListener('keydown', onPopupEscPress);
   };
 
