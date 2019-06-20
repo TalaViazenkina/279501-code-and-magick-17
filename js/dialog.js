@@ -14,7 +14,7 @@
   var ENTER_KEYCODE = 13;
 
   // сохраним изначальные координаты открытого попапа (из CSS)
-  var usersDialogPositionInitial = {
+  var UsersDialogPositionInitial = {
     TOP: '80px',
     LEFT: '50%'
   };
@@ -52,8 +52,8 @@
     userDialog.classList.remove('hidden');
 
     // присваиваем изначальные координаты
-    userDialog.style.top = usersDialogPositionInitial.TOP;
-    userDialog.style.left = usersDialogPositionInitial.LEFT;
+    userDialog.style.top = UsersDialogPositionInitial.TOP;
+    userDialog.style.left = UsersDialogPositionInitial.LEFT;
 
     document.addEventListener('keydown', onPopupEscPress);
   };
