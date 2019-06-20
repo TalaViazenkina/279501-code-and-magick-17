@@ -90,6 +90,8 @@
   userDialogHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
+    var dragged = false; // флаг, который будет показывать было ли перемещение мыши
+
     // определяем координаты курсора в момент нажатия мышки
     var startCoord = {
       x: evt.clientX,
@@ -98,13 +100,16 @@
 
     /**
     * обработчик передвижения мышки
-    * @param {MouseEvent} evtMove
+    * @param {MouseEvent} moveEvt
     */
-    var onMouseMove = function (evtMove) {
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      dragged = true; // меняем флаг
+
       // определяем сдвиг курсора относительно предыдущего положения
       var shift = {
-        x: evtMove.clientX - startCoord.x,
-        y: evtMove.clientY - startCoord.y
+        x: moveEvt.clientX - startCoord.x,
+        y: moveEvt.clientY - startCoord.y
       };
 
       // пересчитываем координаты попапа и задаем их в стили
@@ -113,21 +118,32 @@
 
       // записываем в стартовые координаты текущие координаты курсора
       startCoord = {
-        x: evtMove.clientX,
-        y: evtMove.clientY
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
       };
     };
 
     /** обработчик отпускания кнопки мыши
-    * @param {MouseEvent} evtUp
+    * @param {MouseEvent} upEvt
     */
-    var onMouseUp = function () {
-      userDialogHandle.removeEventListener('mousemove', onMouseMove);
-      userDialogHandle.removeEventListener('mouseup', onMouseUp);
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        var onClickPreventDefault = function (clickEvt) {
+          clickEvt.preventDefault();
+          userDialogHandle.removeEventListener('click', onClickPreventDefault);
+        };
+
+        userDialogHandle.addEventListener('click', onClickPreventDefault);
+      }
     };
 
-    userDialogHandle.addEventListener('mousemove', onMouseMove);
-    userDialogHandle.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
 
   });
 
