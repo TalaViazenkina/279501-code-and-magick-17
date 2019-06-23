@@ -1,17 +1,7 @@
 'use strict';
 
+// открытие/закрытие и перетаскивания окна настройки персонажа
 (function () {
-  /**
-  * @const
-  * @type {number}
-  */
-  var ESC_KEYCODE = 27;
-
-  /**
-  * @const
-  * @type {number}
-  */
-  var ENTER_KEYCODE = 13;
 
   // сохраним изначальные координаты открытого попапа (из CSS)
   var UsersDialogPositionInitial = {
@@ -19,29 +9,28 @@
     LEFT: '50%'
   };
 
+  window.dialog = document.querySelector('.setup'); // окно настройки персонажа
 
-  // находим окно настройки персонажа
-  var userDialog = document.querySelector('.setup');
 
   // кнопка открытия окна настройки персонажа
   var userDialogOpen = document.querySelector('.setup-open');
 
   // кнопка закрытия окна настройки персонажа
-  var userDialogClose = userDialog.querySelector('.setup-close');
+  var userDialogClose = window.dialog.querySelector('.setup-close');
 
   // поле ввода имени в окне настройки персонажа
-  var characterName = userDialog.querySelector('.setup-user-name');
+  var characterName = window.dialog.querySelector('.setup-user-name');
 
   // блок с аватаркой, за которую будем осуществлять перестаскивание попапа
-  var userDialogHandle = userDialog.querySelector('.upload');
+  var userDialogHandle = window.dialog.querySelector('.upload');
 
   /**
   * Обработчик событий клавиатуры - закрытие попапа по esc
   * @param {KeyboardsEvent} evt
   */
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE && characterName !== document.activeElement) {
-      userDialog.classList.add('hidden');
+    if (characterName !== document.activeElement) {
+      window.util.isEscEvent(evt, closePopup);
     }
   };
 
@@ -49,11 +38,11 @@
   * Открывает попап
   */
   var openPopup = function () {
-    userDialog.classList.remove('hidden');
+    window.dialog.classList.remove('hidden');
 
     // присваиваем изначальные координаты
-    userDialog.style.top = UsersDialogPositionInitial.TOP;
-    userDialog.style.left = UsersDialogPositionInitial.LEFT;
+    window.dialog.style.top = UsersDialogPositionInitial.TOP;
+    window.dialog.style.left = UsersDialogPositionInitial.LEFT;
 
     document.addEventListener('keydown', onPopupEscPress);
   };
@@ -62,7 +51,7 @@
   * Закрывает попапа
   */
   var closePopup = function () {
-    userDialog.classList.add('hidden');
+    window.dialog.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
@@ -73,9 +62,7 @@
 
   // открытие окна настройки персонажа по enter
   userDialogOpen.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      openPopup();
-    }
+    window.util.isEnterEvent(evt, openPopup);
   });
 
   // закрытие окна настройки персонажа
@@ -85,9 +72,7 @@
 
   // закрытие окна настройки персонажа по enter
   userDialogClose.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      closePopup();
-    }
+    window.util.isEnterEvent(evt, closePopup);
   });
 
   // перетаскивание окна настройки персонажа
@@ -117,8 +102,8 @@
       };
 
       // пересчитываем координаты попапа и задаем их в стили
-      userDialog.style.top = (userDialog.offsetTop + shift.y) + 'px';
-      userDialog.style.left = (userDialog.offsetLeft + shift.x) + 'px';
+      window.dialog.style.top = (window.dialog.offsetTop + shift.y) + 'px';
+      window.dialog.style.left = (window.dialog.offsetLeft + shift.x) + 'px';
 
       // записываем в стартовые координаты текущие координаты курсора
       startCoord = {
