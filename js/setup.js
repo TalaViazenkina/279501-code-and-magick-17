@@ -32,7 +32,7 @@
   * @param {array} arr
   */
   var getSimilarWizardList = function (quantity, arr) {
-    var mixedArray = window.util.getMixedArray(arr.slice());
+    var mixedArray = window.utils.getMixedArray(arr.slice());
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < quantity; i++) {
       fragment.appendChild(renderWizard(mixedArray[i]));
@@ -48,11 +48,7 @@
     getSimilarWizardList(WIZARDS_NUMBER, response);
   };
 
-  var onLoadError = function (message) {
-    console.error(message);
-  };
-
   // Отрисовка волшебников после загрузки данных с сервера
-  window.backend.load(onLoadSuccess, onLoadError);
+  window.backend.load(onLoadSuccess, window.utils.onError);
 
 })();

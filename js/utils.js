@@ -13,7 +13,7 @@
   */
   var ENTER_KEYCODE = 13;
 
-  window.util = {
+  window.utils = {
     /**
     * генерирует случайный элемент массива
     * @param {array} arr
@@ -64,6 +64,23 @@
       if (evt.keyCode === ENTER_KEYCODE) {
         action();
       }
+    },
+
+    /**
+    * добавляет в разметку сообщение об ошибке
+    * @param {string} errorMessage
+    */
+    onError: function (errorMessage) {
+      // создадим div с сообщением об ошибке
+      var node = document.createElement('div');
+
+      // опишем его стили
+      node.style.cssText = 'position: absolute; top: 50%; left: 50%; z-index: 100; padding: 50px; font-weight: bold; text-align: center; color: #ff0000; background-color: #ffffff; border: 5px solid #ff0000; transform: translate(-50%, -50%)';
+
+      node.textContent = errorMessage;
+
+      // вставим в разметку
+      document.body.insertAdjacentElement('afterbegin', node);
     }
   };
 })();

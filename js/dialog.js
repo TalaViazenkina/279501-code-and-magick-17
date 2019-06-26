@@ -33,7 +33,7 @@
   */
   var onPopupEscPress = function (evt) {
     if (characterName !== document.activeElement) {
-      window.util.isEscEvent(evt, closePopup);
+      window.utils.isEscEvent(evt, closePopup);
     }
   };
 
@@ -65,7 +65,7 @@
 
   // открытие окна настройки персонажа по enter
   userDialogOpen.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, openPopup);
+    window.utils.isEnterEvent(evt, openPopup);
   });
 
   // закрытие окна настройки персонажа
@@ -75,7 +75,7 @@
 
   // закрытие окна настройки персонажа по enter
   userDialogClose.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, closePopup);
+    window.utils.isEnterEvent(evt, closePopup);
   });
 
   // перетаскивание окна настройки персонажа
@@ -143,14 +143,10 @@
     window.dialog.classList.add('hidden');
   };
 
-  var onSaveError = function (message) {
-    console.error(message);
-  };
-
   // отправка данных на сервер с помощью AJAX
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
+    window.backend.save(new FormData(form), onSaveSuccess, window.utils.onError);
   });
 
 })();
