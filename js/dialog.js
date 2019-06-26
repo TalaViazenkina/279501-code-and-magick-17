@@ -18,6 +18,9 @@
   // кнопка закрытия окна настройки персонажа
   var userDialogClose = window.dialog.querySelector('.setup-close');
 
+  // форма настройки персонажа
+  var form = window.dialog.querySelector('.setup-wizard-form');
+
   // поле ввода имени в окне настройки персонажа
   var characterName = window.dialog.querySelector('.setup-user-name');
 
@@ -134,6 +137,20 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
+  });
+
+  var onSaveSuccess = function () {
+    window.dialog.classList.add('hidden');
+  };
+
+  var onSaveError = function (message) {
+    console.error(message);
+  };
+
+  // отправка данных на сервер с помощью AJAX
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(form), onSaveSuccess, onSaveError);
   });
 
 })();
