@@ -2,6 +2,7 @@
 (function () {
   var URL_LOAD = 'https://js.dump.academy/code-and-magick/data';
   var URL_SAVE = 'https://js.dump.academy/code-and-magick';
+  var TIMEOUT = 10000; // 10s
   window.backend = {
     load: function (onLoad, onError) {
       var xhr = new XMLHttpRequest();
@@ -22,7 +23,7 @@
         onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
       });
 
-      xhr.timeout = 30000; // 30s
+      xhr.timeout = TIMEOUT;
 
       xhr.open('GET', URL_LOAD);
       xhr.send();
@@ -48,7 +49,7 @@
         onError('Запрос не успел выполниться за ' + xhr.timeout + ' мс');
       });
 
-      xhr.timeout = 10000; // 10s
+      xhr.timeout = TIMEOUT;
 
       xhr.open('POST', URL_SAVE);
       xhr.send(data);
