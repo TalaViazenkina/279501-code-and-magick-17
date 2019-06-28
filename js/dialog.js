@@ -146,7 +146,11 @@
   // отправка данных на сервер с помощью AJAX
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(form), onSaveSuccess, window.utils.onError);
+    window.backend.submitCounter++;
+
+    if (window.backend.submitCounter === 1) {
+      window.backend.save(new FormData(form), onSaveSuccess, window.utils.onError);
+    }
   });
 
 })();
