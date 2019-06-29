@@ -146,11 +146,11 @@
   // отправка данных на сервер с помощью AJAX
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.backend.submitCounter++;
-
-    if (window.backend.submitCounter === 1) {
+    // запускаем отправку только если в данный момент данные уже не отправляются
+    if (!window.backend.isSaving) {
       window.backend.save(new FormData(form), onSaveSuccess, window.utils.onError);
     }
+    window.backend.isSaving = true;
   });
 
 })();
