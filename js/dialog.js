@@ -18,6 +18,9 @@
   // кнопка закрытия окна настройки персонажа
   var userDialogClose = window.dialog.querySelector('.setup-close');
 
+  // форма настройки персонажа
+  var form = window.dialog.querySelector('.setup-wizard-form');
+
   // поле ввода имени в окне настройки персонажа
   var characterName = window.dialog.querySelector('.setup-user-name');
 
@@ -30,7 +33,7 @@
   */
   var onPopupEscPress = function (evt) {
     if (characterName !== document.activeElement) {
-      window.util.isEscEvent(evt, closePopup);
+      window.utils.isEscEvent(evt, closePopup);
     }
   };
 
@@ -62,7 +65,7 @@
 
   // открытие окна настройки персонажа по enter
   userDialogOpen.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, openPopup);
+    window.utils.isEnterEvent(evt, openPopup);
   });
 
   // закрытие окна настройки персонажа
@@ -72,7 +75,7 @@
 
   // закрытие окна настройки персонажа по enter
   userDialogClose.addEventListener('keydown', function (evt) {
-    window.util.isEnterEvent(evt, closePopup);
+    window.utils.isEnterEvent(evt, closePopup);
   });
 
   // перетаскивание окна настройки персонажа
@@ -134,6 +137,20 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
+  });
+
+  var onSaveSuccess = function () {
+    window.dialog.classList.add('hidden');
+  };
+
+  // отправка данных на сервер с помощью AJAX
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    // запускаем отправку только если в данный момент данные уже не отправляются
+    if (!window.backend.isSaving) {
+      window.backend.save(new FormData(form), onSaveSuccess, window.utils.onError);
+    }
+    window.backend.isSaving = true;
   });
 
 })();
