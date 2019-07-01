@@ -30,6 +30,7 @@
     fireballColor: ''// выбранный цвет фаербол
   };
 
+
   // изменение цвета мантии по клику
   characterCoat.addEventListener('click', function () {
     window.character.coatColor = window.utils.getRandomItem(COAT_COLORS);

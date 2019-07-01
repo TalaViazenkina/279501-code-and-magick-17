@@ -34,10 +34,9 @@
   * @param {array} arr
   */
   var getSimilarWizardList = function (quantity, arr) {
-    var mixedArray = window.utils.getMixedArray(arr.slice());
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < quantity; i++) {
-      fragment.appendChild(renderWizard(mixedArray[i]));
+      fragment.appendChild(renderWizard(arr[i]));
     }
 
     setupWizardsList.appendChild(fragment); // добавляем группу сгенерированных волшебников в разметку, в блок "Похожие персонажи"
@@ -46,9 +45,37 @@
     window.dialog.querySelector('.setup-similar').classList.remove('hidden');
   };
 
+  /**
+  * выcчитывает ранг волшебника
+  * @param {Object} wizard
+  * @return {number}
+  */
+  var getRank = function (wizard) {
+    var rank = 0;
+    if (wizard.colorCoat === window.character.coatColor) {
+      rank += 2;
+    }
+    if (wizard.colorEyes === window.character.eyesColor) {
+      rank += 1;
+    }
+
+    return rank;
+  };
+
+  var namesComparator = function (first, second) {
+    return first - second;
+  };
+
   var onLoadSuccess = function (response) {
     wizardsData = response;
-    getSimilarWizardList(WIZARDS_NUMBER, wizardsData);
+    getSimilarWizardList(WIZARDS_NUMBER, wizardsData.sort(function (first, second) {
+      var rankDiff = getRank(first) - getRank(second);
+      if (rankDiff === 0) {
+        rankDiff = namesComparator(first.name, second.name);
+      }
+      return rankDiff;
+    }
+    ));
   };
 
   // Отрисовка волшебников после загрузки данных с сервера
