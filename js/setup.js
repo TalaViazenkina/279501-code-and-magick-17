@@ -3,6 +3,7 @@
 // модуль настройки похожих персонажей
 (function () {
   var WIZARDS_NUMBER = 4; // количество волшебников, которые необходимо сгенерировать
+  var TIMEOUT = 500;
 
   var coatColor;
   var eyesColor;
@@ -106,13 +107,17 @@
   // Отрисовка похожих волшебников после выбора цвета мантии персонажа
   window.character.onCoatChange = function (color) {
     coatColor = color;
-    updateWizards();
+    window.setTimeout(function () {
+      updateWizards();
+    }, TIMEOUT);
   };
 
   // Отрисовка похожих волшебников после выбора цвета глаз персонажа
   window.character.onEyesChange = function (color) {
     eyesColor = color;
-    updateWizards();
+    window.setTimeout(function () {
+      updateWizards();
+    }, TIMEOUT);
   };
 
 })();
