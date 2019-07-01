@@ -4,7 +4,12 @@
 (function () {
   var WIZARDS_NUMBER = 4; // количество волшебников, которые необходимо сгенерировать
 
+  var coatColor;
+  var eyesColor;
+
   var wizardsData = [];
+
+  var isSimilar; // флаг, который показывает, были ли отрисованы волшебники
 
   // находим DOM-элемент, куда будем вставлять созданных волшебников
   var setupWizardsList = window.dialog.querySelector('.setup-similar-list');
@@ -24,7 +29,7 @@
     newWizard.querySelector('.setup-similar-label').textContent = wizard.name; // добавляем имя
     newWizard.querySelector('.wizard-coat').style.fill = wizard.colorCoat; // добавляем цвет мантии
     newWizard.querySelector('.wizard-eyes').style.fill = wizard.colorEyes; // добавляем цвет глаз
-
+    newWizard.classList.add('similar-wizard');
     return newWizard;
   };
 
@@ -34,12 +39,23 @@
   * @param {array} arr
   */
   var getSimilarWizardList = function (quantity, arr) {
+    // удаляем из разметки предыдущих отрисованных волшебников
+    if (isSimilar) {
+      Array.from(setupWizardsList.querySelectorAll('.similar-wizard'))
+      .forEach(function (it) {
+        setupWizardsList.removeChild(it);
+      });
+    }
+
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < quantity; i++) {
       fragment.appendChild(renderWizard(arr[i]));
     }
 
     setupWizardsList.appendChild(fragment); // добавляем группу сгенерированных волшебников в разметку, в блок "Похожие персонажи"
+
+    // меняем флаг
+    isSimilar = true;
 
     // блок "Похожие персонажи" делаем видимым
     window.dialog.querySelector('.setup-similar').classList.remove('hidden');
@@ -52,10 +68,10 @@
   */
   var getRank = function (wizard) {
     var rank = 0;
-    if (wizard.colorCoat === window.character.coatColor) {
+    if (wizard.colorCoat === coatColor) {
       rank += 2;
     }
-    if (wizard.colorEyes === window.character.eyesColor) {
+    if (wizard.colorEyes === eyesColor) {
       rank += 1;
     }
 
@@ -66,19 +82,37 @@
     return first - second;
   };
 
-  var onLoadSuccess = function (response) {
-    wizardsData = response;
+  /**
+  * отрисовывает похожих волшебников на основе отсортированных данных
+  */
+  var updateWizards = function () {
     getSimilarWizardList(WIZARDS_NUMBER, wizardsData.sort(function (first, second) {
-      var rankDiff = getRank(first) - getRank(second);
+      var rankDiff = getRank(second) - getRank(first);
       if (rankDiff === 0) {
         rankDiff = namesComparator(first.name, second.name);
       }
       return rankDiff;
-    }
-    ));
+    }));
+  };
+
+  var onLoadSuccess = function (response) {
+    wizardsData = response;
+    updateWizards();
   };
 
   // Отрисовка волшебников после загрузки данных с сервера
   window.backend.load(onLoadSuccess, window.utils.onError);
+
+  // Отрисовка похожих волшебников после выбора цвета мантии персонажа
+  window.character.onCoatChange = function (color) {
+    coatColor = color;
+    updateWizards();
+  };
+
+  // Отрисовка похожих волшебников после выбора цвета глаз персонажа
+  window.character.onEyesChange = function (color) {
+    eyesColor = color;
+    updateWizards();
+  };
 
 })();

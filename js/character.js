@@ -25,24 +25,28 @@
   var characterFireballColorInput = window.dialog.querySelector('input[name=fireball-color]');
 
   window.character = {
-    coatColor: '', // выбранный цвет мантии
-    eyesColor: '', // выбранный цвет глаз
-    fireballColor: ''// выбранный цвет фаербол
+
+    onCoatChange: function (color) {},
+    onEyesChange: function (color) {}
   };
 
 
   // изменение цвета мантии по клику
   characterCoat.addEventListener('click', function () {
-    window.character.coatColor = window.utils.getRandomItem(COAT_COLORS);
-    characterCoatColorInput.value = window.character.coatColor;
-    characterCoat.style.fill = window.character.coatColor;
+    var newColor = window.utils.getRandomItem(COAT_COLORS);
+    characterCoatColorInput.value = newColor;
+    characterCoat.style.fill = newColor;
+
+    window.character.onCoatChange(newColor);
   });
 
   // изменение цвета глаз по клику
   characterEyes.addEventListener('click', function () {
-    window.character.eyesColor = window.utils.getRandomItem(EYES_COLORS);
-    characterEyesColorInput.value = window.character.eyesColor;
-    characterEyes.style.fill = window.character.eyesColor;
+    var newColor = window.utils.getRandomItem(EYES_COLORS);
+    characterEyesColorInput.value = newColor;
+    characterEyes.style.fill = newColor;
+
+    window.character.onEyesChange(newColor);
   });
 
   // изменение цвета фаербола по клику
