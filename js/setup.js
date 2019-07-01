@@ -4,6 +4,8 @@
 (function () {
   var WIZARDS_NUMBER = 4; // количество волшебников, которые необходимо сгенерировать
 
+  var wizardsData = [];
+
   // находим DOM-элемент, куда будем вставлять созданных волшебников
   var setupWizardsList = window.dialog.querySelector('.setup-similar-list');
 
@@ -45,7 +47,8 @@
   };
 
   var onLoadSuccess = function (response) {
-    getSimilarWizardList(WIZARDS_NUMBER, response);
+    wizardsData = response;
+    getSimilarWizardList(WIZARDS_NUMBER, wizardsData);
   };
 
   // Отрисовка волшебников после загрузки данных с сервера
