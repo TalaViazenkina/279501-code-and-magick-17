@@ -3,10 +3,10 @@
 // модуль настройки похожих персонажей
 (function () {
   var WIZARDS_NUMBER = 4; // количество волшебников, которые необходимо сгенерировать
-  var TIMEOUT = 500;
 
   var coatColor;
   var eyesColor;
+  var lastTimeout;
 
   var wizardsData = [];
 
@@ -80,7 +80,12 @@
   };
 
   var namesComparator = function (first, second) {
-    return first - second;
+    if (first > second) {
+      return 1;
+    } else if (first < second) {
+      return -1;
+    }
+    return 0;
   };
 
   /**
@@ -105,19 +110,15 @@
   window.backend.load(onLoadSuccess, window.utils.onError);
 
   // Отрисовка похожих волшебников после выбора цвета мантии персонажа
-  window.character.onCoatChange = function (color) {
+  window.character.onCoatChange = window.debounce(function (color) {
     coatColor = color;
-    window.setTimeout(function () {
-      updateWizards();
-    }, TIMEOUT);
-  };
+    updateWizards();
+  });
 
   // Отрисовка похожих волшебников после выбора цвета глаз персонажа
-  window.character.onEyesChange = function (color) {
+  window.character.onEyesChange = window.debounce(function (color) {
     eyesColor = color;
-    window.setTimeout(function () {
-      updateWizards();
-    }, TIMEOUT);
-  };
+    updateWizards();
+  });
 
 })();
