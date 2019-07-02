@@ -6,7 +6,6 @@
 
   var coatColor;
   var eyesColor;
-  var lastTimeout;
 
   var wizardsData = [];
 

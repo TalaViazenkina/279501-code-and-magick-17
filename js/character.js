@@ -26,8 +26,8 @@
 
   window.character = {
 
-    onCoatChange: function (color) {},
-    onEyesChange: function (color) {}
+    onCoatChange: function () {},
+    onEyesChange: function () {}
   };
 
 
